@@ -22,10 +22,12 @@ class MatchController extends Controller
         $matches = DB::table('matches as m')
         ->join('teams as ht', 'm.team_a_id', '=', 'ht.team_id')
         ->join('teams as at', 'm.team_b_id', '=', 'at.team_id')
+        ->leftJoin('referees as r', 'm.referee_id', '=', 'r.referee_id')
         ->select(
            'm.*',                   // all columns from matches
            'ht.team_name as team_a',
-           'at.team_name as team_b'
+           'at.team_name as team_b',
+           'r.name as referee_name'
         )
         ->where('m.season', $season)   // filter by season
         ->get();
